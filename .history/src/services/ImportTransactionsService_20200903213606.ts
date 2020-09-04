@@ -38,7 +38,7 @@ class ImportTransactionsService {
       categories.push(category);
       transactions.push({ title, type, value, category });
     });
-    await new Promise(resolve => parseCSV.on('end', resolve)); // aqui esperamos carregar a promisse do parceCSV pra retornar os dados... pois aqui aguarda até que ela tenha sido executada.
+    await new Promise(resolve => parseCSV.on('end', resolve));
 
     const existentCategories = await categoryRepository.find({
       where: {

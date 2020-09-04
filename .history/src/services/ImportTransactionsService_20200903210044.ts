@@ -19,7 +19,7 @@ class ImportTransactionsService {
     const contactsReadStream = fs.createReadStream(filePath);
 
     const parsers = csvParse({
-      from_line: 2, // iremos pegar o csv apartir da linha 2
+      from_line: 2,
     });
 
     const parseCSV = contactsReadStream.pipe(parsers);
@@ -28,17 +28,15 @@ class ImportTransactionsService {
     const categories: string[] = [];
 
     parseCSV.on('data', async line => {
-      // através do on, ele irá percorrer linha por linha que retornar e estiver disponivel e iremos desustruturar cada informação de cada linha que tiver
       const [title, type, value, category] = line.map((cell: string) =>
-        // agora iremos percorrer todas as linhas checando cada celula desse documento.csv
         cell.trim(),
-      ); // cell.trim(), remove todo o espaço em banco que tiver em cada celula
+      );
       if (!title || !type || !value) return;
 
       categories.push(category);
       transactions.push({ title, type, value, category });
     });
-    await new Promise(resolve => parseCSV.on('end', resolve)); // aqui esperamos carregar a promisse do parceCSV pra retornar os dados... pois aqui aguarda até que ela tenha sido executada.
+    await new Promise(resolve => parseCSV.on('end', resolve));
 
     const existentCategories = await categoryRepository.find({
       where: {
@@ -72,6 +70,7 @@ class ImportTransactionsService {
     );
 
     await transactionsRepository.save(createdTransactions);
+    console.log(createdTransactions);
     return createdTransactions;
   }
 }
