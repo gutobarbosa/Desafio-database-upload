@@ -6,12 +6,12 @@ export default class CreateRelacionship1599059915028
     await queryRunner.createForeignKey(
       'transactions',
       new TableForeignKey({
-        name: 'TransactionsCategory', // nome da chave estrangeira
+        name: 'TransactionsCategory',
         columnNames: ['category_id'], // nome da coluna que estara na tabela de transactions
         referencedColumnNames: ['id'], // o nome da coluna referenciada nessa foreignkey la na tabela de categories
         referencedTableName: 'categories', // tabela de categorias
-        onDelete: 'SET NULL', // no delete ele não remove nesse caso, o campo de id vai ficar null
-        onUpdate: 'CASCADE', // sempre que atualizar em algum lugar, atualiza nos outros
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE',
       }),
     );
   }

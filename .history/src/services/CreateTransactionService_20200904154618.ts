@@ -20,7 +20,7 @@ class CreateTransactionService {
     category,
     type,
   }: Request): Promise<Transaction> {
-    // devemos validar se tem saldo disponivel para autorizar a transação, então por isso essa verificação dever ser primeiro de cadastrar a categoria.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const transactionsRepository = getCustomRepository(TransactionsRepository);
     if (type !== 'income' && type !== 'outcome') {
       throw new AppError('Invalid type use just income or outcome in type');
@@ -29,14 +29,12 @@ class CreateTransactionService {
     if (type === 'outcome' && total < value) {
       throw new AppError('Account balance unavailable');
     }
-    // buscar as categorias no banco
     const categoriesRepository = getRepository(Category);
-    // procura a categoria informada no banco de dados
+
     const categoriesRepositoryFind = await categoriesRepository.findOne({
       where: { title: category },
     });
 
-    // a categoria existe ? se não ela cria uma nova, se sim, ele apenas usa o ID da que ja existe.
     if (!categoriesRepositoryFind) {
       const categories = categoriesRepository.create({
         title: category,
@@ -46,6 +44,7 @@ class CreateTransactionService {
     const categoryFindAgain = await categoriesRepository.findOne({
       where: { title: category },
     });
+    console.log(categoryFindAgain);
     const transactions = transactionsRepository.create({
       title,
       value,

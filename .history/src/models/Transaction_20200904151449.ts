@@ -7,6 +7,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Category from './Category';
 
 @Entity('transactions') // referenciado como uma entidade no banco com o nome de transactions

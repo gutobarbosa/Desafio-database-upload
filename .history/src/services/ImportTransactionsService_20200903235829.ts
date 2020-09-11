@@ -62,21 +62,17 @@ class ImportTransactionsService {
 
     await categoryRepository.save(newCategories);
 
-    const finalCategories = [...newCategories, ...existentCategories];
-
     const createdTransactions = transactionsRepository.create(
       transactions.map(transaction => ({
         title: transaction.title,
         type: transaction.type,
         value: transaction.value,
-        category: finalCategories.find(
-          category => category.title === transaction.category,
-        ),
+        category: transaction.category,
       })),
     );
 
     await transactionsRepository.save(createdTransactions);
-    await fs.promises.unlink(filePath); // aqui nos removemos o arquivo do diretorio pra não lotar a pasta tmp
+    await fs.promises.unlink(filePath);
     return createdTransactions;
   }
 }

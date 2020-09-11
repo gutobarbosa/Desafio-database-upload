@@ -62,7 +62,7 @@ class ImportTransactionsService {
 
     await categoryRepository.save(newCategories);
 
-    const finalCategories = [...newCategories, ...existentCategories];
+    const finalCategories = { ...newCategories, ...existentCategories };
 
     const createdTransactions = transactionsRepository.create(
       transactions.map(transaction => ({

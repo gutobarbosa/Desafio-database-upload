@@ -62,16 +62,20 @@ class ImportTransactionsService {
 
     await categoryRepository.save(newCategories);
 
-    const finalCategories = [...newCategories, ...existentCategories];
+    const existentCategoriesAgain = await categoryRepository.find({
+      where: {
+        title: In(categories),
+      },
+    });
+
+    console.log(existentCategoriesAgain);
 
     const createdTransactions = transactionsRepository.create(
       transactions.map(transaction => ({
         title: transaction.title,
         type: transaction.type,
         value: transaction.value,
-        category: finalCategories.find(
-          category => category.title === transaction.category,
-        ),
+        category: existentCategoriesAgain,
       })),
     );
 
